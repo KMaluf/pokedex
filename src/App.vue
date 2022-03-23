@@ -1,18 +1,32 @@
 <template>
   <div id="app">
-    
+    <div v-for="(poke,index) in pokemons" :key="index">
+        <DexPokemon :name="poke.name" :url="poke.url" :num="index+1"/>
+    </div>
 
 
   </div>
 </template>
 
 <script>
-
+import axios from 'axios';
+import DexPokemon from './components/DexPokemon.vue';
 
 export default {
   name: 'App',
-  components: {
-    
+  data(){
+    return{
+      pokemons:[]
+    }
+  },
+  created: function(){
+    axios.get("https://pokeapi.co/api/v2/pokemon?limit=151&offset=0").then(res=>{
+      console.log("pegou a lista de pokemons");
+      this.pokemons = res.data.results;
+      })
+  },
+  components:{
+    DexPokemon
   }
 }
 </script>
